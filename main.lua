@@ -6,9 +6,13 @@ function love.load()
    player = {
      x = 50,
      y = 400,
-     speed = 200,
+     x_speed = 200,
+     y_speed = 0,
+     jump_height = 300,
      direction = 2
    }
+
+   gravity = 400
 
    loadAnimations()
 end
@@ -20,6 +24,16 @@ end
 
 function love.draw()
   drawAnimations()
+  love.graphics.print("player.x: " .. player.x, 10, 10)
+  love.graphics.print("player.y: " .. player.y, 10, 20)
+end
+
+function love.keypressed(key)
+  if key == "w" then
+    if player.y_speed == 0 then -- we're probably on the ground, let's jump
+      player.y_speed = player.jump_height
+    end
+  end
 end
 
 function loadAnimations()
@@ -34,9 +48,17 @@ end
 
 function updatePlayerPosition(dt)
   if love.keyboard.isDown('a') then
-    player.x = player.x - dt * player.speed
+    player.x = player.x - dt * player.x_speed
   elseif love.keyboard.isDown('d') then
-    player.x = player.x + dt * player.speed
+    player.x = player.x + dt * player.x_speed
+  end
+  if player.y_speed ~= 0 then
+    player.y = player.y - player.y_speed * dt
+    player.y_speed = player.y_speed - gravity * dt
+    if player.y > 400 then
+      player.y_speed = 0
+      player.y = 400
+    end
   end
 end
 
