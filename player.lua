@@ -15,6 +15,8 @@ function Player:initialize()
   self.y_speed = 0
   self.direction = 2
   self.jump_height = 200
+  self.width = 50
+  self.height = 80
   self:loadAnimations()
 end
 
@@ -34,6 +36,7 @@ function Player:update(dt)
   elseif love.keyboard.isDown('d') then
     self.x = self.x + dt * self.x_speed
   end
+  self.x = math.clamp(self.x, 0, WIDTH * 2 - 50)
   if self.y_speed ~= 0 then
     self.y = self.y - self.y_speed * dt
     self.y_speed = self.y_speed - GRAVITY * dt
