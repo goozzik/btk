@@ -1,4 +1,6 @@
 anim8 = require 'libs/anim8'
+loader = require 'libs/Advanced-Tiled-Loader/Loader'
+
 require 'camera'
 require 'player'
 
@@ -10,7 +12,10 @@ FLOOR_Y = 480
 function love.load()
   love.graphics.setBackgroundColor(34, 69, 103)
   player = Player.create()
-  camera:setBounds(0, 0, WIDTH, math.floor(HEIGHT / 8))
+  loader.path = "maps/"
+  map = loader.load("map01.tmx")
+  map:setDrawRange(0, 0, map.width * map.tileWidth, map.height * map.tileHeight)
+  camera:setBounds(0, 0, map.width * map.tileWidth - WIDTH, map.height * map.tileHeight - HEIGHT)
 end
 
 function love.update(dt)
@@ -20,11 +25,14 @@ end
 
 function love.draw()
   camera:set()
+  map:draw()
   player:draw()
-  love.graphics.rectangle("fill", 0, FLOOR_Y , WIDTH * 2, HEIGHT)
   camera:unset()
+  local tileX = math.floor(player.x / map.tileWidth)
+  local tileY = math.floor(player.y / map.tileHeight)
   love.graphics.print("player.x: " .. player.x, 10, 10)
   love.graphics.print("player.y: " .. player.y, 10, 20)
+  love.graphics.print("Current tile: ("..tileX..", "..tileY..")", 10, 30)
 end
 
 function love.keypressed(key)
