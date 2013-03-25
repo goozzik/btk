@@ -1,13 +1,11 @@
 anim8 = require 'libs/anim8'
 loader = require 'libs/Advanced-Tiled-Loader/Loader'
-
 require 'camera'
 require 'player'
 
 GRAVITY = 400
 WIDTH = 800
 HEIGHT = 600
-FLOOR_Y = 480
 
 function love.load()
   love.graphics.setBackgroundColor(34, 69, 103)
@@ -19,7 +17,7 @@ function love.load()
 end
 
 function love.update(dt)
-  player:update(dt)
+  player:update(dt, map)
   camera:setPosition(math.floor(player.x - WIDTH / 2 + 200), math.floor(player.y - HEIGHT / 2))
 end
 
@@ -38,6 +36,12 @@ end
 function love.keypressed(key)
   if key == "w" then
     player:jump()
+  end
+end
+
+function love.keyreleased(key)
+  if (key == "a") or (key == "d") then
+    player:stop()
   end
 end
 
