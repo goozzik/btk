@@ -29,3 +29,30 @@ end
 function Blotter:draw()
   blotterAnimation:draw(blotterImage, self.x, self.y)
 end
+
+function Blotter:isColliding(map)
+  local tileX, tileY = math.floor(self.x / map.tileWidth), math.floor(self.y / map.tileHeight)
+  local tile = map("walls")(tileX, tileY)
+  return not(tile == nil)
+end
+
+function Blotter:x1()
+  return self.x
+end
+
+function Blotter:x2()
+  return self.x + self.width
+end
+
+function Blotter:y1()
+  return self.y
+end
+
+function Blotter:y2()
+  return self.y + self.height
+end
+
+function Blotter:touchesObject(object)
+  return ((self:x2() - 1 >= object:x1()) and (self:x1() <= object:x2() - 1)
+  and (self:y2() - 1 >= object:y1()) and (self:y1() <= object:y2() - 1))
+end

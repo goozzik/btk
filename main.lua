@@ -25,15 +25,27 @@ function love.load()
   numBlotters = 25
   blotters = {}
   for i = 1, numBlotters do
-    local blotterX = math.random(1, map.width - 1) * map.tileWidth + map.tileWidth / 2
-    local blotterY = math.random(1, map.height - 1) * map.tileHeight + map.tileHeight / 2
-    blotters[i] = Blotter.create(blotterX, blotterY)
+    local blotterCollides = true
+    while blotterCollides do
+      local blotterX = math.random(1, map.width - 1) * map.tileWidth + map.tileWidth / 2
+      local blotterY = math.random(1, map.height - 1) * map.tileHeight + map.tileHeight / 2
+      blotters[i] = Blotter.create(blotterX, blotterY)
+      blotterCollides = blotters[i]:isColliding(map)
+    end
   end
+
+  score = 0
 end
 
 function love.update(dt)
   player:update(dt, map)
   Blotter.updateAnimation(dt)
+  for i in ipairs(blotters) do
+    if blotters[i]:touchesObject(player) then
+      score = score + 1
+      table.remove(blotters, i)
+    end
+  end
   camera:setPosition(math.floor(player.x - WIDTH / 2 + 200), math.floor(player.y - HEIGHT / 2))
 end
 
@@ -50,6 +62,7 @@ function love.draw()
   love.graphics.print("player.x: " .. player.x, 10, 10)
   love.graphics.print("player.y: " .. player.y, 10, 20)
   love.graphics.print("Current tile: ("..tileX..", "..tileY..")", 10, 30)
+  love.graphics.print("Score: "..score, 700, 10)
 end
 
 function love.keypressed(key)

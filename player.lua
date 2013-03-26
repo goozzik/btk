@@ -166,3 +166,19 @@ end
 function Player:stop()
   self.xSpeed = 0
 end
+
+function Player:x1()
+  return self.x
+end
+
+function Player:x2()
+  return self.x + self.width
+end
+
+function Player:y1()
+  return self.y
+end
+
+function Player:y2()
+  return self.y + self.height
+end
