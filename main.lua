@@ -2,6 +2,7 @@ anim8 = require 'libs/anim8'
 loader = require 'libs/Advanced-Tiled-Loader/Loader'
 require 'camera'
 require 'player'
+require 'blotter'
 
 GRAVITY = 400
 WIDTH = 800
@@ -9,15 +10,30 @@ HEIGHT = 600
 
 function love.load()
   love.graphics.setBackgroundColor(34, 69, 103)
-  player = Player.create()
+
+  -- load tiled-map
   loader.path = "maps/"
   map = loader.load("map01.tmx")
   map:setDrawRange(0, 0, map.width * map.tileWidth, map.height * map.tileHeight)
   camera:setBounds(0, 0, map.width * map.tileWidth - WIDTH, map.height * map.tileHeight - HEIGHT)
+
+  -- create player
+  player = Player.create()
+
+  -- create blotters
+  math.randomseed(os.time())
+  numBlotters = 25
+  blotters = {}
+  for i = 1, numBlotters do
+    local blotterX = math.random(1, map.width - 1) * map.tileWidth + map.tileWidth / 2
+    local blotterY = math.random(1, map.height - 1) * map.tileHeight + map.tileHeight / 2
+    blotters[i] = Blotter.create(blotterX, blotterY)
+  end
 end
 
 function love.update(dt)
   player:update(dt, map)
+  Blotter.updateAnimation(dt)
   camera:setPosition(math.floor(player.x - WIDTH / 2 + 200), math.floor(player.y - HEIGHT / 2))
 end
 
@@ -25,6 +41,9 @@ function love.draw()
   camera:set()
   map:draw()
   player:draw()
+  for i in ipairs(blotters) do
+    blotters[i]:draw()
+  end
   camera:unset()
   local tileX = math.floor(player.x / map.tileWidth)
   local tileY = math.floor(player.y / map.tileHeight)
