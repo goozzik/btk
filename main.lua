@@ -3,6 +3,7 @@ loader = require 'libs/Advanced-Tiled-Loader/Loader'
 require 'camera'
 require 'player'
 require 'blotter'
+require 'toast'
 
 GRAVITY = 400
 WIDTH = 800
@@ -14,8 +15,10 @@ function love.load()
   -- load tiled-map
   loader.path = "maps/"
   map = loader.load("map01.tmx")
-  map:setDrawRange(0, 0, map.width * map.tileWidth, map.height * map.tileHeight)
-  camera:setBounds(0, 0, map.width * map.tileWidth - WIDTH, map.height * map.tileHeight - HEIGHT)
+  MAP_WIDTH = map.width * map.tileWidth
+  MAP_HEIGHT = map.height * map.tileHeight
+  map:setDrawRange(0, 0, MAP_WIDTH, MAP_HEIGHT)
+  camera:setBounds(0, 0, MAP_WIDTH - WIDTH, MAP_HEIGHT - HEIGHT)
 
   -- create player
   player = Player.create()
@@ -34,6 +37,7 @@ function love.load()
     end
   end
 
+  toasts = {}
   score = 0
 end
 
@@ -46,6 +50,12 @@ function love.update(dt)
       table.remove(blotters, i)
     end
   end
+  for i, toast in ipairs(toasts) do
+    toast:update(dt)
+    if toast:isOut() then
+      table.remove(toasts, i)
+    end
+  end
   camera:setPosition(math.floor(player.x - WIDTH / 2 + 200), math.floor(player.y - HEIGHT / 2))
 end
 
@@ -55,6 +65,9 @@ function love.draw()
   player:draw()
   for i in ipairs(blotters) do
     blotters[i]:draw()
+  end
+  for i, toast in ipairs(toasts) do
+    toast:draw()
   end
   camera:unset()
   local tileX = math.floor(player.x / map.tileWidth)
@@ -79,4 +92,32 @@ end
 
 function math.clamp(x, min, max)
   return x < min and min or (x > max and max or x)
+end
+
+function love.mousepressed(x, y, button)
+  if button == "l" then
+    toast = Toast.create(player:x2(), player.y + 40, getMapPositionFromDisplayPosition(x, y))
+    table.insert(toasts, toast)
+  end
+end
+
+function getMapPositionFromDisplayPosition(x, y)
+  local _x, _y
+  if player.x >= MAP_WIDTH - 600 then
+    _x = MAP_WIDTH - WIDTH + x
+  elseif player.x <= 200 then
+    _x = x
+  else
+    _x = player.x + x - 200
+  end
+
+  if player.y >= MAP_HEIGHT - 300 then
+    _y = MAP_HEIGHT - HEIGHT + y
+  elseif player.y <= 300 then
+    _y = y
+  else
+    _y = player.y + y - 300
+  end
+
+  return _x, _y
 end

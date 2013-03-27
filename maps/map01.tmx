@@ -5,7 +5,7 @@
  </tileset>
  <layer name="walls" width="55" height="35">
   <data encoding="base64" compression="zlib">
-   eJztmMkNADAIw+j+S3eEXqhNqC3xBUx+tIhohasiuHmCmye4eYKbJ7h5gpsnuHmCmycZbqq3Ibf1ngqQ237vl5Db+YwXkFverJucuKn/qNX2yWTWbTUfhTx/y03h5hk47z7iB7eq1QEWeQDL
+   eJztl0EKwCAQA9f/f7qnXizU4saarBnwJjVjkGqLiFZ4VMRumthNE7tpYrfnfIV/JGsuBHbT5Kub0jm7Yc+XwW6a9G5qZ+oNRHZWd+VeRqxwY9kr9zb/7Z24t/waO3BvuLX+JOPGfodhy4Mk835Dzl/Bab0x7DkC5ewjTnCrOi6QvADf
   </data>
  </layer>
 </map>
