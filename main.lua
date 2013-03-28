@@ -4,6 +4,7 @@ require 'camera'
 require 'player'
 require 'blotter'
 require 'toast'
+require 'enemy'
 
 GRAVITY = 400
 WIDTH = 800
@@ -38,6 +39,8 @@ function love.load()
   end
 
   toasts = {}
+  enemies = {}
+  enemies[1] = Enemy.create(450, 200)
   score = 0
 end
 
@@ -55,6 +58,12 @@ function love.update(dt)
     if toast:isOut() then
       table.remove(toasts, i)
     end
+    for j, enemy in ipairs(enemies) do
+      if toast:touchesObject(enemy) then
+        table.remove(enemies, j)
+        table.remove(toasts, i)
+      end
+    end
   end
   camera:setPosition(math.floor(player.x - WIDTH / 2 + 200), math.floor(player.y - HEIGHT / 2))
 end
@@ -68,6 +77,9 @@ function love.draw()
   end
   for i, toast in ipairs(toasts) do
     toast:draw()
+  end
+  for i, enemy in ipairs(enemies) do
+    enemy:draw()
   end
   camera:unset()
   local tileX = math.floor(player.x / map.tileWidth)
