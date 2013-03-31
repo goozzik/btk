@@ -40,7 +40,16 @@ function love.load()
 
   toasts = {}
   enemies = {}
-  enemies[1] = Enemy.create(450, 200)
+  for i = 1, 25 do
+    local enemyCollides = true
+    while enemyCollides do
+      local enemyX = math.random(1, map.width - 1) * map.tileWidth + map.tileWidth / 2
+      local enemyY = math.random(1, map.height - 1) * map.tileHeight + map.tileHeight / 2
+      enemies[i] = Enemy.create(enemyX, enemyY)
+      enemyCollides = enemies[i]:isColliding(map, enemyX, enemyY)
+    end
+  end
+
   score = 0
 end
 
@@ -52,6 +61,9 @@ function love.update(dt)
       score = score + 1
       table.remove(blotters, i)
     end
+  end
+  for i, enemy in ipairs(enemies) do
+    enemy:update(dt, map)
   end
   for i, toast in ipairs(toasts) do
     toast:update(dt)
