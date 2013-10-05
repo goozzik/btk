@@ -1,4 +1,4 @@
-window.game.PlayScreen = me.ScreenObject.extend(
+game.PlayScreen = me.ScreenObject.extend(
 
   onResetEvent: ->
     me.levelDirector.loadLevel "map01"
