@@ -20,10 +20,9 @@
   <object name="mainBunny" x="96" y="384" width="32" height="64">
    <properties>
     <property name="image" value="bunny_run_right"/>
-    <property name="spritewidth" value="64"/>
+    <property name="spritewidth" value="50"/>
    </properties>
   </object>
-  <object x="32" y="480" width="32"/>
  </objectgroup>
  <layer name="collision" width="40" height="15">
   <data encoding="base64">
