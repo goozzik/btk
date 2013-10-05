@@ -13,7 +13,13 @@ window.game =
     me.state.change me.state.LOADING
 
   loaded: ->
-    me.state.set me.state.PLAY, new window.game.PlayScreen()
+    me.state.set me.state.PLAY, new game.PlayScreen()
+
+    me.entityPool.add("mainBunny", game.BunnyEntity)
+    me.input.bindKey(me.input.KEY.A,  "left")
+    me.input.bindKey(me.input.KEY.D, "right")
+    me.input.bindKey(me.input.KEY.SPACE, "jump", true)
+
     me.state.change me.state.PLAY
 
 window.onReady onReady = ->
