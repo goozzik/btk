@@ -3,7 +3,7 @@ game.BunnyEntity = me.ObjectEntity.extend(
   init: (x, y, settings) ->
     @parent x, y, settings
     @setVelocity 3, 15
-    @updateColRect(8, 32, -1, 0);
+    @updateColRect(8, 32, -1, 0)
     me.game.viewport.follow @pos, me.game.viewport.AXIS.BOTH
 
   update: ->
@@ -24,8 +24,14 @@ game.BunnyEntity = me.ObjectEntity.extend(
       @parent()
       return true
     false
+    if me.input.isKeyPressed('shoot')
+      @shoot()
 
     # debug hitbox
     #
     me.debug.renderHitBox = window.debug
+
+  shoot: ->
+    me.entityPool.newInstanceOf("toast", @vel.x, @vel.y, {})
+
 )
