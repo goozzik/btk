@@ -14,4 +14,8 @@ game.resources = [
   name: 'bunny_run_right',
   type: 'image',
   src: 'data/img/sprite/bunny_run_right.png'
+,
+  name: 'toast',
+  type: 'image',
+  src: 'data/img/toast.png'
 ]

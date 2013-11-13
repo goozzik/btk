@@ -32,6 +32,8 @@ game.BunnyEntity = me.ObjectEntity.extend(
     me.debug.renderHitBox = window.debug
 
   shoot: ->
-    me.entityPool.newInstanceOf("toast", @vel.x, @vel.y, {})
+    toast = new me.entityPool.newInstanceOf('toast', @pos.x, @pos.y)
+    me.game.add(toast, @z)
+    me.game.sort()
 
 )
