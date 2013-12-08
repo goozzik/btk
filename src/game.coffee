@@ -8,6 +8,10 @@ window.game =
       window.onReady ->
         me.plugin.register.defer debugPanel, "debug"
     me.audio.init "mp3,ogg"
+
+    me.input.registerPointerEvent "mousemove", me.game.viewport, (e) ->
+      game.mouseTarget = { x: e.gameWorldX, y: e.gameWorldY }
+
     me.loader.onload = @loaded.bind(this)
     me.loader.preload window.game.resources
     me.state.change me.state.LOADING
