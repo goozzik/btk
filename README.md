@@ -1,5 +1,9 @@
-1. Compile coffee to js runtime
-  `coffee -o js/ -cw src/`
+# BTK
 
-2. How to run google chrome
+## Compile coffee to js in runtime
+  install CoffeeScript compiler http://coffeescript.org
+  run `coffee -o js/ -cw src/`
+
+## How to run using google chrome
   `open -a "Google Chrome" --args --allow-file-access-from-files`
+  `open index.html`
