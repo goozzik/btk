@@ -20,7 +20,10 @@ game.ToastEntity = me.ObjectEntity.extend(
     @vel.x += @accel.x * me.timer.tick
     @vel.y += @accel.y * me.timer.tick
     @computeVelocity(@vel)
+    res = @updateMovement()
+    @checkForEnvCollision(res)
 
-    @updateMovement()
+  checkForEnvCollision: (res) ->
+    me.game.remove(@) if res.x != 0 || res.y != 0
 
 )
