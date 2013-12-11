@@ -15,10 +15,14 @@ app.get('/', function(req, res){
 var server = require('http').createServer(app);
 var io = require('socket.io').listen(server);
 
+var players = {};
+
 io.sockets.on('connection', function (socket) {
-  socket.emit('news', { hello: 'world' });
-  socket.on('my other event', function (data) {
-    console.log(socket.id);
+  console.log(socket.id)
+  socket.on('addPlayer', function (id, data) {
+    players[id] = { x: data.x, y: data.y, id: id }
+    socket.broadcast.emit('addPlayer', id, { x: data.x, y: data.y })
+    socket.emit('addPlayers', players);
   });
 });
 
