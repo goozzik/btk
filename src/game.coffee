@@ -36,20 +36,20 @@ window.game =
     me.input.bindMouse(me.input.mouse.LEFT, me.input.KEY.P)
 
   connect: ->
-    @socket = io.connect('http://localhost:3000')
-    @mainPlayer = new me.entityPool.newInstanceOf(
-      'mainPlayer', 150, 400, { id: @socket.socket.sessionid}
-    )
-    me.game.add(@mainPlayer, 3)
-    me.game.sort()
+    @socket = io.connect('http://192.168.1.101:3000')
+    @socket.on 'setSessionId', (id) =>
+      @mainPlayer = new me.entityPool.newInstanceOf('mainPlayer', 150, 400, { id: id })
+      me.game.add(@mainPlayer, 3)
+      me.game.sort()
+      @socket.emit 'addPlayer',
+        @mainPlayer.id, { x: @mainPlayer.pos.x, y: @mainPlayer.pos.y }
     @defineNetworkEvents()
-    @socket.emit 'addPlayer',
-      @mainPlayer.id, { x: @mainPlayer.pos.x, y: @mainPlayer.pos.y }
 
   # Network events
   defineNetworkEvents: ->
     @socket.on 'addPlayer', (id, data) => @addPlayer(id, data)
     @socket.on 'addPlayers', (players) => @addPlayers(players)
+    @socket.on 'updatePlayerState', (id, data) => @updatePlayerState(id, data)
 
   addPlayer: (id, data) ->
     if @mainPlayer.id != id
@@ -63,6 +63,14 @@ window.game =
   addPlayers: (players) ->
     for id of players
       @addPlayer(id, players[id])
+
+  updatePlayerState: (id, data) ->
+    if @players[id]? && @mainPlayer.id != id
+      player = @players[id]
+      player.pos.x = data.x
+      player.pos.y = data.y
+      player.direction = data.direction
+      player.stateChanged = true
 
 window.onReady onReady = ->
   game.onload()
