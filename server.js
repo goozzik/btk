@@ -37,6 +37,10 @@ io.sockets.on('connection', function (socket) {
       );
     }
   });
+
+  socket.on('fireBullet', function(data) {
+    socket.broadcast.emit('fireBullet', socket.id, data);
+  });
 });
 
 server.listen(app.get('port'), function() {

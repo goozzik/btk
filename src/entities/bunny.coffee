@@ -54,9 +54,7 @@ game.PlayerEntity = me.ObjectEntity.extend(
 
   shoot: ->
     pos = @shootPosition()
-    toast = new me.entityPool.newInstanceOf('toast', pos.x, pos.y, { target: game.mouseTarget })
-    me.game.add(toast, @z)
-    me.game.sort()
+    game.fireBullet(@id, { x: pos.x, y: pos.y, target: game.mouseTarget })
 
   shootPosition: ->
     x: (if @direction then @pos.x + 45 else @pos.x + 5)

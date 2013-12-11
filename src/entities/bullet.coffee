@@ -1,15 +1,17 @@
-game.ToastEntity = me.ObjectEntity.extend(
+game.BulletEntity = me.ObjectEntity.extend(
 
   init: (x, y, settings) ->
 
     settings.image = 'toast'
     settings.spritewidth = '12'
     settings.spriteheight = '12'
+    @id = settings.id
 
     @parent x, y, settings
 
     @maxVelocity = 5
     @gravity = 0
+    @target = settings.target
 
     targetVector = new me.Vector2d(settings.target.x - x, settings.target.y - y)
     targetVector.normalize()

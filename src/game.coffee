@@ -23,7 +23,7 @@ window.game =
 
     me.entityPool.add('mainPlayer', game.PlayerEntity)
     me.entityPool.add('enemyPlayer', game.NetworkPlayerEntity)
-    me.entityPool.add('toast', game.ToastEntity, true)
+    me.entityPool.add('bullet', game.BulletEntity, true)
 
     @defineKeys()
     me.state.change me.state.PLAY
@@ -50,6 +50,7 @@ window.game =
     @socket.on 'addPlayer', (id, data) => @addPlayer(id, data)
     @socket.on 'addPlayers', (players) => @addPlayers(players)
     @socket.on 'updatePlayerState', (id, data) => @updatePlayerState(id, data)
+    @socket.on 'fireBullet', (id, data) => @fireBullet(id, data)
 
   addPlayer: (id, data) ->
     if @mainPlayer.id != id
@@ -71,6 +72,14 @@ window.game =
       player.pos.y = data.y
       player.direction = data.direction
       player.stateChanged = true
+
+  fireBullet: (id, data) ->
+    bullet = new me.entityPool.newInstanceOf('bullet',
+      data.x, data.y, { target: data.target, id: id })
+    me.game.add(bullet, 3)
+    if @mainPlayer.id == id
+      game.socket.emit 'fireBullet',
+        { x: data.x, y: data.y, target: data.target }
 
 window.onReady onReady = ->
   game.onload()
