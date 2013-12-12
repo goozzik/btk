@@ -5,6 +5,7 @@ game.PlayerEntity = me.ObjectEntity.extend(
     settings.spritewidth = '50'
     settings.spriteheight = '80'
     @parent x, y, settings
+    @collidable = true
     @setVelocity 3, 15
     @updateColRect(8, 32, -1, 0)
     @id = settings.id
@@ -60,6 +61,10 @@ game.PlayerEntity = me.ObjectEntity.extend(
     x: (if @direction then @pos.x + 45 else @pos.x + 5)
     y: @pos.y + 30
 
+  respawn: ->
+    @pos.x = 1000
+    @pos.y = 300
+
 )
 
 game.NetworkPlayerEntity = me.ObjectEntity.extend(
@@ -73,6 +78,7 @@ game.NetworkPlayerEntity = me.ObjectEntity.extend(
     @updateColRect(8, 32, -1, 0)
     @gravity = 0
     @state = {}
+    @id = settings.id
 
   update: ->
     @vel.x = 0

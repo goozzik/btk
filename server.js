@@ -41,6 +41,10 @@ io.sockets.on('connection', function (socket) {
   socket.on('fireBullet', function(data) {
     socket.broadcast.emit('fireBullet', socket.id, data);
   });
+
+  socket.on('killPlayer', function(id) {
+    socket.broadcast.emit('killPlayer', socket.id, id);
+  });
 });
 
 server.listen(app.get('port'), function() {
