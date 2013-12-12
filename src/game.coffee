@@ -52,6 +52,7 @@ window.game =
     @socket.on 'updatePlayerState', (id, data) => @updatePlayerState(id, data)
     @socket.on 'fireBullet', (id, data) => @fireBullet(id, data)
     @socket.on 'killPlayer', (id) => @killPlayer(id)
+    @socket.on 'removePlayer', (id) => @removePlayer(id)
 
   addPlayer: (id, data) ->
     if @mainPlayer.id != id
@@ -84,6 +85,11 @@ window.game =
 
   killPlayer: (id) ->
     console.log "Player #{id} died"
+
+  removePlayer: (id) ->
+    if @players[id]?
+      me.game.remove @players[id]
+      delete @players[id]
 
 window.onReady onReady = ->
   game.onload()

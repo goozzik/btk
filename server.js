@@ -19,6 +19,12 @@ var players = {};
 
 io.sockets.on('connection', function (socket) {
   socket.emit('setSessionId', socket.id)
+
+  socket.on('disconnect', function () {
+    delete players[socket.id];
+    socket.broadcast.emit('removePlayer', socket.id);
+  });
+
   socket.on('addPlayer', function (id, data) {
     players[id] = { x: data.x, y: data.y, id: id, direction: true }
     socket.broadcast.emit('addPlayer',
