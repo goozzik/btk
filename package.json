@@ -1,11 +1,23 @@
 {
-  "name": "BTK",
-  "description": "Simple multiplayer shooter",
-  "version": "0.0.1",
+  "name": "bunny-the-killer",
+  "description": "Bunnies, toasters and authoritative multiplayer mayhem",
+  "version": "1.0.0",
   "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "test": "node --test test/*.test.js",
+    "test:browser": "playwright test",
+    "test:load": "node scripts/load-test.js"
+  },
   "dependencies": {
-    "express": "3.4.6"
-    "ejs": "0.8.5"
-    "socket": "0.9.16"
+    "ws": "^8.18.3"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.55.0"
   }
 }

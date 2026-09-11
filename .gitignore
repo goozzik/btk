@@ -1,3 +1,7 @@
 .DS_Store
-tests/*
 public/js/*
+node_modules/
+test-results/
+playwright-report/
+.env
+artifacts/
